@@ -17,6 +17,10 @@
 ### バックエンド
 - FastAPI(Python)
 
+### コード整形/コードフォーマット
+- Prettier(保存時に自動適用されるようvscode設定済み)
+- ESLint(コード品質のチェック)
+
 ## Node.jsとnpmの管理方法
 ### Voltaを使用
 #### Voltaとは
