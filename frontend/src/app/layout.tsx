@@ -1,13 +1,15 @@
 import Header from "@/components/Header";
 import "./globals.css";
 
+type RootLayoutProps = {
+  // React.ReactNodeは「Reactで使えるものならなんでもOK！」って意味の型.
+  children: React.ReactNode;
+};
+
 export default function RootLayout({
   // childrenは各ページの中身が入る場所.
   children,
-}: {
-  // React.ReactNodeは「Reactで使えるものならなんでもOK！」って意味の型.
-  children: React.ReactNode;
-}) {
+}: RootLayoutProps) {
   return (
     <html lang="ja">
       <body>
