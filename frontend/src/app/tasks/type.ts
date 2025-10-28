@@ -7,11 +7,13 @@ export type Priority = (typeof PRIORITY_LIST)[number];
 export type TaskType = {
   id: number;
   title: string;
-  detail: string;
+  description: string;
   status: Status;
-  priority: PRIORITY;
+  priority: Priority;
   displayOrder: number;
   startDate: Date;
   endDate: Date;
   dueDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
