@@ -1,15 +1,30 @@
+/* 1️⃣ Tailwind本体 */
 @import "tailwindcss";
 
-/* カスタム変数の定義 */
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --font-sans: Arial, Helvetica, sans-serif;
+/* 2️⃣ テーマ変数 */
+@theme {
+  --color-primary: #4e92d8;
+  --bg-base: #1e1f21;
+  --bg-surface: #252628;
+  --bg-surface2: #2e2e30;
+  --border-primary: #5d5e60;
+  --text-primary: #f4f4f6;
+  --text-secondary: #99999b;
 }
 
-/* 全体のスタイル */
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+/* 3️⃣ ベーススタイル */
+@layer base {
+  html {
+  }
+  body {
+    @apply bg-[var(--bg-base)] font-sans text-[var(--text-primary)];
+  }
+}
+
+/* 4️⃣ カスタムユーティリティ */
+@utility btn-primary {
+  @apply rounded bg-[var(--color-primary)] px-4 py-2 text-[var(--text-primary)];
+  @variant hover {
+    @apply opacity-90;
+  }
 }
