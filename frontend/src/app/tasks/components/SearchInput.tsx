@@ -5,7 +5,7 @@ type Props = {
   placeholder?: string;
 };
 
-export default function SearchInput({ placeholder = "検索" }: Props) {
+const SearchInput = ({ placeholder = "検索" }: Props) => {
   const [query, setQuery] = useContext(SearchContext);
   return (
     <input
@@ -16,4 +16,6 @@ export default function SearchInput({ placeholder = "検索" }: Props) {
       className="flex-1 bg-transparent text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none"
     />
   );
-}
+};
+
+export default SearchInput;

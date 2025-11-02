@@ -12,6 +12,7 @@ export const SearchContext = createContext<SearchContextType>(["", () => {}]);
 
 export default function Home() {
   const [query, setQuery] = useState<string>("");
+  //const [filter, setFilter] = useState<string>("");
 
   return (
     <>
