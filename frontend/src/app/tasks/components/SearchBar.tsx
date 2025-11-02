@@ -1,0 +1,13 @@
+import SearchIcon from "./SearchIcon";
+import SearchInput from "./SearchInput";
+
+const SearchBar: React.FC = () => {
+  return (
+    <label className="mx-3 my-2 flex h-10 cursor-text items-center rounded-md border border-[var(--border-primary)] bg-[var(--bg-surface)] transition focus-within:border-[var(--color-primary)]">
+      <SearchIcon />
+      <SearchInput placeholder="タスクタイトルで検索" />
+    </label>
+  );
+};
+
+export default SearchBar;
