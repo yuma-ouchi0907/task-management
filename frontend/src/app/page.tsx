@@ -1,6 +1,7 @@
 "use client";
-import { useState, createContext } from "react";
 import ToolBar from "@/app/tasks/components/ToolBar";
+import { createContext, useState } from "react";
+import TaskList from "./tasks/components/TaskList";
 import { tasks } from "./tasks/data/tasks";
 import { STATUS_LIST } from "./tasks/type";
 
@@ -34,22 +35,7 @@ export default function Home() {
                   }
                 </p>
               </div>
-              {tasks
-                .filter((task) => task.status === status)
-                .filter((task) => task.title.indexOf(query) !== -1)
-                .map((task) => (
-                  <article
-                    key={task.id}
-                    className="bg-[var(--bg-surface)] leading-12 text-[var(--text-primary)]"
-                  >
-                    <div className="radius-60 mb-6 rounded-lg border-1 border-[var(--border-primary)] bg-[var(--bg-surface2)] px-4 font-normal">
-                      <h3>{task.title}</h3>
-                      <p className="font-normal text-[var(--text-secondary)]">
-                        10月28日 - 10日31日
-                      </p>
-                    </div>
-                  </article>
-                ))}
+              <TaskList tasks={tasks} status={status} query={query} />
             </div>
           ))}
         </section>

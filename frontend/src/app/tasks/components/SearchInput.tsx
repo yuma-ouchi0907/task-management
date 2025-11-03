@@ -1,5 +1,5 @@
-import { useContext } from "react";
 import { SearchContext } from "@/app/page";
+import { useContext } from "react";
 
 type Props = {
   placeholder?: string;
