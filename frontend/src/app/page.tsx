@@ -21,7 +21,6 @@ export default function Home() {
         <SearchContext.Provider value={[query, setQuery]}>
           <ToolBar />
         </SearchContext.Provider>
-
         <section className="grid grid-cols-3 gap-4 bg-[var(--bg-surface)] px-32">
           {STATUS_LIST.map((status) => (
             <div key={status} className="h-screen bg-[var(--bg-surface)] px-16">
