@@ -1,9 +1,10 @@
-/* 1️⃣ Tailwind本体 */
+/* 1️⃣ Tailwind本体とアニメーション */
 @import "tailwindcss";
+@import "tw-animate-css";
 
-/* 2️⃣ テーマ変数 */
+/* 2️⃣ 自作テーマ変数（あなたの配色優先） */
 @theme {
-  --color-primary: #4e92d8;
+  --color-primary: #4e92d8; /* メインカラー（フォーカス時などにも使う） */
   --bg-base: #1e1f21;
   --bg-surface: #252628;
   --bg-surface2: #2e2e30;
@@ -12,18 +13,33 @@
   --text-secondary: #99999b;
 }
 
-/* 3️⃣ ベーススタイル */
+/* 3️⃣ shadcn/ui との整合性を保つテーマ変数マッピング */
+@theme inline {
+  --color-background: var(--bg-base);
+  --color-foreground: var(--text-primary);
+  --color-border: var(--border-primary);
+  --color-ring: var(--color-primary); /* ← focus外枠に自分の青 */
+  --color-popover: var(--bg-surface);
+  --color-popover-foreground: var(--text-primary);
+  --color-card: var(--bg-surface2);
+  --color-card-foreground: var(--text-primary);
+}
+
+/* 4️⃣ ベーススタイル */
 @layer base {
-  html {
+  * {
+    /* 枠線とフォーカスリングを共通テーマで */
+    @apply border-border outline-[var(--color-primary)];
   }
+
   body {
     @apply bg-[var(--bg-base)] font-sans text-[var(--text-primary)];
   }
 }
 
-/* 4️⃣ カスタムユーティリティ */
+/* 5️⃣ カスタムボタンユーティリティ */
 @utility btn-primary {
-  @apply rounded bg-[var(--color-primary)] px-4 py-2 text-[var(--text-primary)];
+  @apply rounded-md bg-[var(--color-primary)] px-4 py-2 text-[var(--text-primary)];
   @variant hover {
     @apply opacity-90;
   }
