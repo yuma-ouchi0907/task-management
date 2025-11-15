@@ -27,9 +27,18 @@
 
 /* 4️⃣ ベーススタイル */
 @layer base {
-  * {
-    /* 枠線とフォーカスリングを共通テーマで */
-    @apply border-border outline-[var(--color-primary)];
+  /* 全要素へのoutline指定をやめて、input系だけに限定 */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* ボタンなどはフォーカス時でも枠線を消す */
+  button:focus {
+    /* outline: none;
+    box-shadow: none; */
   }
 
   body {
