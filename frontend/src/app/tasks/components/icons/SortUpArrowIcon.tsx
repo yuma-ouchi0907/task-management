@@ -1,6 +1,6 @@
 import { ArrowDownZA } from "lucide-react";
 
-const SortUpArrowIcon = () => {
+const SortUpArrowIcon: React.FC = () => {
   return <ArrowDownZA />;
 };
 

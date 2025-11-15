@@ -1,3 +1,4 @@
+//この画面からexportすることで各コンポーネントでimportを簡潔に書くことができる
 export { default as FilterIcon } from "./FilterIcon";
 export { default as SearchIcon } from "./SearchIcon";
 export { default as SortIcon } from "./SortIcon";
