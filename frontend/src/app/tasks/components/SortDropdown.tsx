@@ -9,7 +9,6 @@ import { useContext } from "react";
 import { SortContext } from "@/app/page";
 import {
   SortDownArrowIcon,
-  SortIcon,
   SortUpArrowIcon,
 } from "@/app/tasks/components/icons";
 import SortButton from "@/app/tasks/components/SortButton";
