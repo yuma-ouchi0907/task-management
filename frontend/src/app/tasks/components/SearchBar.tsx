@@ -1,5 +1,5 @@
-import SearchIcon from "./SearchIcon";
 import SearchInput from "./SearchInput";
+import { SearchIcon } from "@/app/tasks/components/icons";
 
 const SearchBar: React.FC = () => {
   return (

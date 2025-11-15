@@ -6,14 +6,14 @@ type Props = {
 };
 
 const SearchInput = ({ placeholder = "検索" }: Props) => {
-  const [query, setQuery] = useContext(SearchContext);
+  const [searchKeyword, setSearchKeyword] = useContext(SearchContext);
   return (
     <input
       type="text"
-      value={query}
+      value={searchKeyword}
       placeholder={placeholder}
-      onChange={(e) => setQuery(e.target.value)}
-      className="flex-1 bg-transparent text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none"
+      onChange={(e) => setSearchKeyword(e.target.value)}
+      className="flex-1 bg-transparent text-[var(--text-primary)] placeholder-[var(--text-secondary)] hover:opacity-80 focus:outline-none"
     />
   );
 };
