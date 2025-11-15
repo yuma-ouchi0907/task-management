@@ -1,25 +1,19 @@
 "use client";
-import ToolBar from "@/app/tasks/components/ToolBar";
 import { createContext, useState, useMemo } from "react";
-import TaskList from "./tasks/components/TaskList";
-import { tasks } from "./tasks/data/tasks";
-import { STATUS_LIST, Priority, TaskType } from "./tasks/type";
-
-export type SortState = {
-  sortKey: string;
-  sortOrder: "asc" | "desc";
-  setSortKey: (key: string) => void;
-  toggleSortOrder: () => void;
-};
-
-type SearchContextType = [string, React.Dispatch<React.SetStateAction<string>>];
-type FilterContextType = [
-  Priority[],
-  React.Dispatch<React.SetStateAction<Priority[]>>,
-];
+import ToolBar from "@/app/tasks/components/ToolBar";
+import TaskList from "@/app/tasks/components/TaskList";
+import { tasks } from "@/app/tasks/data/tasks";
+import {
+  STATUS_LIST,
+  Priority,
+  TaskType,
+  SortContextType,
+  SearchContextType,
+  FilterContextType,
+} from "@/app/tasks/type";
 
 export const SearchContext = createContext<SearchContextType>(["", () => {}]);
-export const SortContext = createContext<SortState>({
+export const SortContext = createContext<SortContextType>({
   sortKey: "createdAt",
   sortOrder: "asc",
   setSortKey: () => {},

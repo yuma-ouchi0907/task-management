@@ -17,3 +17,19 @@ export type TaskType = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type SortContextType = {
+  sortKey: string;
+  sortOrder: "asc" | "desc";
+  setSortKey: (key: string) => void;
+  toggleSortOrder: () => void;
+};
+
+export type SearchContextType = [
+  string,
+  React.Dispatch<React.SetStateAction<string>>,
+];
+export type FilterContextType = [
+  Priority[],
+  React.Dispatch<React.SetStateAction<Priority[]>>,
+];
