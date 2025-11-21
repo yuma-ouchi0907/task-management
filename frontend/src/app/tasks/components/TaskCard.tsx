@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { TaskType } from "../type";
-import TaskDetailModal from "./TaskDetailModal";
+import TaskDescriptionModal from "./TaskDescriptionModal";
 
 type TaskCardProps = {
   task: TaskType;
@@ -15,8 +15,9 @@ export default function TaskCard({ task }: TaskCardProps) {
 
   return (
     <>
+      {/* タスクがセットされていたらモーダルを開く */}
       {selectedTask !== null && (
-        <TaskDetailModal task={selectedTask} onCloseModal={onCloseModal} />
+        <TaskDescriptionModal task={selectedTask} onCloseModal={onCloseModal} />
       )}
       <article
         onClick={() => setSelectedTask(task)}
