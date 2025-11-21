@@ -11,6 +11,7 @@ import {
   SearchContextType,
   FilterContextType,
 } from "@/app/tasks/type";
+import { PlusIcon } from "./tasks/components/icons";
 
 export const SearchContext = createContext<SearchContextType>(["", () => {}]);
 export const SortContext = createContext<SortContextType>({
@@ -86,17 +87,22 @@ export default function Home() {
           </SortContext.Provider>
         </SearchContext.Provider>
 
-        <section className="grid grid-cols-3 gap-4 bg-[var(--bg-surface)] px-32">
+        <section className="grid h-screen grid-cols-3 gap-4 bg-[var(--bg-surface)] px-32">
           {STATUS_LIST.map((status) => (
-            <div key={status} className="h-screen bg-[var(--bg-surface)] px-16">
+            <div key={status} className="bg-[var(--bg-surface)] px-16">
               <div className="flex">
                 <h2 className="my-2 text-2xl font-bold">{status}</h2>
                 <p className="mx-6 my-2 text-xl font-bold text-[var(--text-secondary)]">
                   {sortedTasks.filter((t) => t.status === status).length}
                 </p>
               </div>
-
               <TaskList tasks={sortedTasks} status={status} />
+              {status === "Todo" && (
+                <button className="mt-3 flex w-full justify-center rounded-lg border border-[var(--border-primary)] py-2 text-sm text-[var(--text-secondary)] transition hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)]">
+                  <p className="self-center">タスクを追加</p>
+                  <PlusIcon />
+                </button>
+              )}
             </div>
           ))}
         </section>
