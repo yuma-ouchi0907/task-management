@@ -32,7 +32,7 @@ export default function FilterDropdown() {
         className="border-border w-40 border-b"
       >
         <DropdownMenuLabel className="text-[var(--text-secondary)]">
-          プライオリティ:
+          優先度:
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="mx-1" />
         <DropdownMenuCheckboxItem
@@ -40,7 +40,7 @@ export default function FilterDropdown() {
           checked={filter.includes("High")}
           onCheckedChange={() => togglePriority("High")}
         >
-          High
+          高
         </DropdownMenuCheckboxItem>
 
         <DropdownMenuCheckboxItem
@@ -48,7 +48,7 @@ export default function FilterDropdown() {
           checked={filter.includes("Medium")}
           onCheckedChange={() => togglePriority("Medium")}
         >
-          Medium
+          中
         </DropdownMenuCheckboxItem>
 
         <DropdownMenuCheckboxItem
@@ -56,7 +56,7 @@ export default function FilterDropdown() {
           checked={filter.includes("Low")}
           onCheckedChange={() => togglePriority("Low")}
         >
-          Low
+          低
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>
