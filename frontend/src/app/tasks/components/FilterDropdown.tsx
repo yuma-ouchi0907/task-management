@@ -2,10 +2,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  DropdownMenuCheckboxItem,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+
+import { Check } from "lucide-react";
 import FilterButton from "./FilterButton";
 import { useContext } from "react";
 import { Priority } from "@/app/tasks/type";
@@ -29,35 +31,45 @@ export default function FilterDropdown() {
 
       <DropdownMenuContent
         align="start"
-        className="border-border w-40 border-b"
+        className="border-border w-40 cursor-default border-b"
       >
         <DropdownMenuLabel className="text-[var(--text-secondary)]">
           優先度:
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="mx-1" />
-        <DropdownMenuCheckboxItem
-          className="text-[var(--text-secondary)]"
-          checked={filter.includes("High")}
-          onCheckedChange={() => togglePriority("High")}
+
+        <DropdownMenuItem
+          onClick={() => togglePriority("High")}
+          className="flex cursor-pointer items-center gap-2 text-[var(--text-secondary)]"
         >
+          <Check
+            className={filter.includes("High") ? "opacity-100" : "opacity-0"}
+            size={14}
+          />
           高
-        </DropdownMenuCheckboxItem>
+        </DropdownMenuItem>
 
-        <DropdownMenuCheckboxItem
-          className="text-[var(--text-secondary)]"
-          checked={filter.includes("Medium")}
-          onCheckedChange={() => togglePriority("Medium")}
+        <DropdownMenuItem
+          onClick={() => togglePriority("Medium")}
+          className="flex cursor-pointer items-center gap-2 text-[var(--text-secondary)]"
         >
+          <Check
+            className={filter.includes("Medium") ? "opacity-100" : "opacity-0"}
+            size={14}
+          />
           中
-        </DropdownMenuCheckboxItem>
+        </DropdownMenuItem>
 
-        <DropdownMenuCheckboxItem
-          className="text-[var(--text-secondary)]"
-          checked={filter.includes("Low")}
-          onCheckedChange={() => togglePriority("Low")}
+        <DropdownMenuItem
+          onClick={() => togglePriority("Low")}
+          className="flex cursor-pointer items-center gap-2 text-[var(--text-secondary)]"
         >
+          <Check
+            className={filter.includes("Low") ? "opacity-100" : "opacity-0"}
+            size={14}
+          />
           低
-        </DropdownMenuCheckboxItem>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
