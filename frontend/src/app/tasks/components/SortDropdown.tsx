@@ -16,12 +16,12 @@ import SortButton from "@/app/tasks/components/SortButton";
 export default function SortDropdown() {
   const { sortKey, sortOrder, setSortKey, toggleSortOrder } =
     useContext(SortContext);
-  const [open, setOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
 
   // トリガーが押された時に「閉じないで開くだけ」にする
   const handleTriggerClick = (e: React.MouseEvent) => {
     e.preventDefault(); // デフォルトのトグル挙動を無効化
-    setOpen(true); // 常に開く
+    setSortOpen(true); // 常に開く
   };
   // 選択中のソート項目を薄いprimary背景に
   const keyItemClass = (key: string) =>
@@ -49,7 +49,7 @@ export default function SortDropdown() {
   };
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
+    <DropdownMenu open={sortOpen} onOpenChange={setSortOpen}>
       <DropdownMenuTrigger asChild>
         <SortButton />
       </DropdownMenuTrigger>
