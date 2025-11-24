@@ -9,18 +9,23 @@ import {
 
 import { Check } from "lucide-react";
 import FilterButton from "./FilterButton";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { Priority } from "@/app/tasks/type";
 
 import { FilterContext } from "@/app/page";
 
 export default function FilterDropdown() {
   const [filter, setFilter] = useContext(FilterContext);
-
+  const [filterOpen, setFilterOpen] = useState(false);
   const togglePriority = (value: Priority) => {
     setFilter((prev) =>
       prev.includes(value) ? prev.filter((p) => p !== value) : [...prev, value],
     );
+  };
+
+  const handleTriggerClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // デフォルトのトグル挙動を無効化
+    setFilterOpen(true); // 常に開く
   };
 
   const filterItemClass = (value: Priority) =>
@@ -39,7 +44,7 @@ export default function FilterDropdown() {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={filterOpen} onOpenChange={setFilterOpen}>
       <DropdownMenuTrigger asChild>
         <FilterButton />
       </DropdownMenuTrigger>
@@ -47,6 +52,7 @@ export default function FilterDropdown() {
       <DropdownMenuContent
         align="start"
         className="border-border w-40 cursor-default border-b"
+        onClick={handleTriggerClick}
       >
         <DropdownMenuLabel className="text-[var(--text-secondary)]">
           優先度:
