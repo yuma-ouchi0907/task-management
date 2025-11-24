@@ -47,7 +47,6 @@ export default function Home() {
 
   const setSortKey = (key: string) => {
     setSortKeyRaw(key);
-    setSortOrder("asc");
   };
 
   const toggleSortOrder = () => {
