@@ -23,6 +23,21 @@ export default function FilterDropdown() {
     );
   };
 
+  const filterItemClass = (value: Priority) =>
+    `flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm
+   ${
+     filter.includes(value)
+       ? "bg-[var(--color-primary)]/15 m-1 text-[var(--color-primary)]"
+       : "text-[var(--text-secondary)] m-1"
+   }`;
+  const resetFilter = () => {
+    setFilter([]);
+  };
+
+  const selectAllFilter = () => {
+    setFilter(["High", "Medium", "Low"]);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -40,7 +55,7 @@ export default function FilterDropdown() {
 
         <DropdownMenuItem
           onClick={() => togglePriority("High")}
-          className="flex cursor-pointer items-center gap-2 text-[var(--text-secondary)]"
+          className={filterItemClass("High")}
         >
           <Check
             className={filter.includes("High") ? "opacity-100" : "opacity-0"}
@@ -51,7 +66,7 @@ export default function FilterDropdown() {
 
         <DropdownMenuItem
           onClick={() => togglePriority("Medium")}
-          className="flex cursor-pointer items-center gap-2 text-[var(--text-secondary)]"
+          className={filterItemClass("Medium")}
         >
           <Check
             className={filter.includes("Medium") ? "opacity-100" : "opacity-0"}
@@ -62,13 +77,26 @@ export default function FilterDropdown() {
 
         <DropdownMenuItem
           onClick={() => togglePriority("Low")}
-          className="flex cursor-pointer items-center gap-2 text-[var(--text-secondary)]"
+          className={filterItemClass("Low")}
         >
           <Check
             className={filter.includes("Low") ? "opacity-100" : "opacity-0"}
             size={14}
           />
           低
+        </DropdownMenuItem>
+        <DropdownMenuSeparator className="mx-1" />
+        <DropdownMenuItem
+          className="m-1 cursor-pointer text-[var(--text-secondary)]"
+          onClick={() => selectAllFilter()}
+        >
+          全て選択
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="m-1 cursor-pointer text-[var(--text-secondary)]"
+          onClick={() => resetFilter()}
+        >
+          選択解除
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
