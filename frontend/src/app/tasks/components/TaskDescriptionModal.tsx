@@ -33,11 +33,18 @@ export default function TaskDescriptionModal({
     return `${formatDate(start as Date)} 〜 ${formatDate(end as Date)}`;
   };
 
+  type PriorityLabel = "高" | "中" | "低";
+  const priorityLabelMap: Record<TaskType["priority"], PriorityLabel> = {
+    High: "高",
+    Medium: "中",
+    Low: "低",
+  };
+
   return (
     <>
       <div className="relative z-10" role="dialog" aria-modal="true">
         <div
-          className="fixed inset-0 bg-gray-500/75 transition-opacity"
+          className="fixed inset-0 bg-[var(--bg-surface)]/60 transition-opacity"
           aria-hidden="true"
         ></div>
 
@@ -61,7 +68,7 @@ export default function TaskDescriptionModal({
               </button>
               <div className="px-6 pt-8 pb-6 sm:px-10 sm:pt-12 sm:pb-10">
                 <header className="space-y-3">
-                  <p className="text-xs tracking-[0.2em] text-[var(--text-secondary)] uppercase">
+                  <p className="text-xs tracking-[0.2em] text-[var(--text-secondary)]">
                     # {task.status}
                   </p>
                   <div className="flex flex-wrap items-start justify-between gap-4">
@@ -86,14 +93,12 @@ export default function TaskDescriptionModal({
                   <dl className="space-y-2">
                     <dt className="text-[var(--text-secondary)]">ステータス</dt>
                     <dd className="text-base font-medium">{task.status}</dd>
-                    <dt className="text-[var(--text-secondary)]">
-                      プライオリティ
-                    </dt>
+                    <dt className="text-[var(--text-secondary)]">優先度</dt>
                     <dd>
                       <span
                         className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${priorityBadgeClassName[task.priority]}`}
                       >
-                        {task.priority}
+                        {priorityLabelMap[task.priority]}
                       </span>
                     </dd>
                   </dl>
