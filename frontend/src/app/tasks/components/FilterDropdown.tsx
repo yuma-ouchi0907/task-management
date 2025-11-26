@@ -32,8 +32,8 @@ export default function FilterDropdown() {
     `flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm
    ${
      filter.includes(value)
-       ? "bg-[var(--color-primary)]/15 m-1 text-[var(--color-primary)]"
-       : "text-[var(--text-secondary)] m-1"
+       ? "bg-[var(--color-primary)]/15 m-1 hover:opacity-80 text-[var(--color-primary)]"
+       : "text-[var(--text-secondary)] hover:opacity-80 m-1"
    }`;
   const resetFilter = () => {
     setFilter([]);
@@ -93,13 +93,13 @@ export default function FilterDropdown() {
         </DropdownMenuItem>
         <DropdownMenuSeparator className="mx-1" />
         <DropdownMenuItem
-          className="m-1 cursor-pointer text-[var(--text-secondary)]"
+          className="m-1 cursor-pointer text-[var(--text-secondary)] hover:opacity-80"
           onClick={() => selectAllFilter()}
         >
           全て選択
         </DropdownMenuItem>
         <DropdownMenuItem
-          className="m-1 cursor-pointer text-[var(--text-secondary)]"
+          className="m-1 cursor-pointer text-[var(--text-secondary)] hover:opacity-80"
           onClick={() => resetFilter()}
         >
           選択解除

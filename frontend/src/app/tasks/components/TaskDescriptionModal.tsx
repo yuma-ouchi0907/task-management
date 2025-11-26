@@ -37,7 +37,7 @@ export default function TaskDescriptionModal({
     <>
       <div className="relative z-10" role="dialog" aria-modal="true">
         <div
-          className="fixed inset-0 bg-gray-500/75 transition-opacity"
+          className="fixed inset-0 bg-[var(--bg-surface)]/60 transition-opacity"
           aria-hidden="true"
         ></div>
 

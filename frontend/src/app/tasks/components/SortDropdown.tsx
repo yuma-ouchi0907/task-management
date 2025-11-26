@@ -28,8 +28,8 @@ export default function SortDropdown() {
     `flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm
      ${
        sortKey === key
-         ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)]"
-         : "text-[var(--text-secondary)]"
+         ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)] hover:opacity-80"
+         : "text-[var(--text-secondary)] hover:opacity-80"
      }`;
 
   // 昇順・降順のメニュー用
@@ -37,8 +37,8 @@ export default function SortDropdown() {
     `flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm
      ${
        sortOrder === order
-         ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)]"
-         : "text-[var(--text-secondary)]"
+         ? "bg-[var(--color-primary)]/15 hover:opacity-80 text-[var(--color-primary)]"
+         : "text-[var(--text-secondary)] hover:opacity-80"
      }`;
 
   const handleChangeOrder = (order: "asc" | "desc") => {

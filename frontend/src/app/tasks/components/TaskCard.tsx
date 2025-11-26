@@ -23,7 +23,7 @@ export default function TaskCard({ task }: TaskCardProps) {
         onClick={() => setSelectedTask(task)}
         className="bg-[var(--bg-surface)] leading-12 text-[var(--text-primary)] hover:cursor-pointer"
       >
-        <div className="radius-60 mb-6 rounded-lg border-1 border-[var(--border-primary)] bg-[var(--bg-surface2)] px-4 font-normal">
+        <div className="radius-60 mb-6 rounded-lg border-1 border-[var(--border-primary)] bg-[var(--bg-surface2)] px-4 font-normal hover:opacity-80">
           <h3>{task.title}</h3>
           <p className="font-normal text-[var(--text-secondary)]">
             10月28日 - 10日31日
