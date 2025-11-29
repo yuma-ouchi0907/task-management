@@ -66,7 +66,7 @@ export default function TaskDescriptionModal({
               >
                 <CloseIcon />
               </button>
-              <div className="px-6 pt-8 pb-6 sm:px-10 sm:pt-12 sm:pb-10">
+              <div className="cursor-default px-6 pt-8 pb-6 sm:px-10 sm:pt-12 sm:pb-10">
                 <header className="space-y-3">
                   <p className="text-xs tracking-[0.2em] text-[var(--text-secondary)]">
                     # {task.status}
@@ -91,9 +91,13 @@ export default function TaskDescriptionModal({
 
                 <section className="mt-6 grid gap-6 border-t border-[var(--border-primary)] pt-6 text-sm text-[var(--text-primary)] sm:grid-cols-2">
                   <dl className="space-y-2">
-                    <dt className="text-[var(--text-secondary)]">ステータス</dt>
+                    <dt className="mb-0 text-[var(--text-secondary)]">
+                      ステータス
+                    </dt>
                     <dd className="text-base font-medium">{task.status}</dd>
-                    <dt className="text-[var(--text-secondary)]">優先度</dt>
+                    <dt className="mb-0 text-[var(--text-secondary)]">
+                      優先度
+                    </dt>
                     <dd>
                       <span
                         className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${priorityBadgeClassName[task.priority]}`}
@@ -103,13 +107,15 @@ export default function TaskDescriptionModal({
                     </dd>
                   </dl>
                   <dl className="space-y-2">
-                    <dt className="text-[var(--text-secondary)]">期限</dt>
+                    <dt className="mb-0 text-[var(--text-secondary)]">期限</dt>
                     <dd className="text-base font-medium">
                       {/* <span className="inline-flex items-center rounded-md border border-red-200 bg-red-50 px-2 py-1 text-xs font-semibold text-red-700"> */}
                       {formatDate(task.dueDate)}
                       {/* </span> */}
                     </dd>
-                    <dt className="text-[var(--text-secondary)]">更新日</dt>
+                    <dt className="mb-0 text-[var(--text-secondary)]">
+                      更新日
+                    </dt>
                     <dd className="text-base font-medium">
                       {formatDate(task.updatedAt)}
                     </dd>
@@ -117,7 +123,7 @@ export default function TaskDescriptionModal({
                 </section>
 
                 <section className="mt-8 space-y-3">
-                  <div className="flex items-center justify-between text-sm text-[var(--text-secondary)]">
+                  <div className="mb-0 flex items-center justify-between text-sm text-[var(--text-secondary)]">
                     <span>詳細</span>
                     {/* 編集ボタンは後々作成する */}
                     {/* <button
