@@ -21,11 +21,11 @@ export default function TaskCard({ task }: TaskCardProps) {
       )}
       <article
         onClick={() => setSelectedTask(task)}
-        className="bg-[var(--bg-surface)] leading-12 text-[var(--text-primary)] hover:cursor-pointer"
+        className="bg-[var(--bg-surface)] leading-12 text-[var(--text-primary)] transition-colors duration-200 hover:cursor-pointer"
       >
-        <div className="radius-60 mb-6 rounded-lg border-1 border-[var(--border-primary)] bg-[var(--bg-surface2)] px-4 font-normal">
-          <h3>{task.title}</h3>
-          <p className="font-normal text-[var(--text-secondary)]">
+        <div className="group radius-60 mb-6 rounded-lg border-1 border-[var(--border-primary)] bg-[var(--bg-surface2)] px-4 font-normal hover:bg-[var(--color-primary)]/30 hover:text-white">
+          <h3 className="group-hover:text-white">{task.title}</h3>
+          <p className="font-normal text-[var(--text-secondary)] group-hover:text-white">
             10月28日 - 10日31日
           </p>
         </div>
