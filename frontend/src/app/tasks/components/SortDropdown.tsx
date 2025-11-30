@@ -5,7 +5,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { SortContext } from "@/app/page";
 import {
   SortDownArrowIcon,
@@ -16,14 +16,20 @@ import SortButton from "@/app/tasks/components/SortButton";
 export default function SortDropdown() {
   const { sortKey, sortOrder, setSortKey, toggleSortOrder } =
     useContext(SortContext);
+  const [sortOpen, setSortOpen] = useState(false);
 
+  // トリガーが押された時に「閉じないで開くだけ」にする
+  const handleTriggerClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // デフォルトのトグル挙動を無効化
+    setSortOpen(true); // 常に開く
+  };
   // 選択中のソート項目を薄いprimary背景に
   const keyItemClass = (key: string) =>
     `flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm
      ${
        sortKey === key
-         ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)]"
-         : "text-[var(--text-secondary)]"
+         ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)] hover:opacity-80"
+         : "text-[var(--text-secondary)] hover:opacity-80"
      }`;
 
   // 昇順・降順のメニュー用
@@ -31,8 +37,8 @@ export default function SortDropdown() {
     `flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm
      ${
        sortOrder === order
-         ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)]"
-         : "text-[var(--text-secondary)]"
+         ? "bg-[var(--color-primary)]/15 hover:opacity-80 text-[var(--color-primary)]"
+         : "text-[var(--text-secondary)] hover:opacity-80"
      }`;
 
   const handleChangeOrder = (order: "asc" | "desc") => {
@@ -43,7 +49,7 @@ export default function SortDropdown() {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={sortOpen} onOpenChange={setSortOpen}>
       <DropdownMenuTrigger asChild>
         <SortButton />
       </DropdownMenuTrigger>
@@ -52,6 +58,7 @@ export default function SortDropdown() {
         align="start"
         className="border-border w-36 border-b"
         forceMount
+        onClick={handleTriggerClick}
       >
         {/* ソートキー */}
         <DropdownMenuItem

@@ -1,25 +1,20 @@
 "use client";
-import ToolBar from "@/app/tasks/components/ToolBar";
 import { createContext, useState, useMemo } from "react";
-import TaskList from "./tasks/components/TaskList";
-import { tasks } from "./tasks/data/tasks";
-import { STATUS_LIST, Priority, TaskType } from "./tasks/type";
-
-export type SortState = {
-  sortKey: string;
-  sortOrder: "asc" | "desc";
-  setSortKey: (key: string) => void;
-  toggleSortOrder: () => void;
-};
-
-type SearchContextType = [string, React.Dispatch<React.SetStateAction<string>>];
-type FilterContextType = [
-  Priority[],
-  React.Dispatch<React.SetStateAction<Priority[]>>,
-];
+import ToolBar from "@/app/tasks/components/ToolBar";
+import TaskList from "@/app/tasks/components/TaskList";
+import { tasks } from "@/app/tasks/data/tasks";
+import {
+  STATUS_LIST,
+  Priority,
+  TaskType,
+  SortContextType,
+  SearchContextType,
+  FilterContextType,
+} from "@/app/tasks/type";
+import { PlusIcon } from "./tasks/components/icons";
 
 export const SearchContext = createContext<SearchContextType>(["", () => {}]);
-export const SortContext = createContext<SortState>({
+export const SortContext = createContext<SortContextType>({
   sortKey: "createdAt",
   sortOrder: "asc",
   setSortKey: () => {},
@@ -49,10 +44,9 @@ export default function Home() {
 
   const [sortKey, setSortKeyRaw] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
+  const [taskList, setTaskList] = useState<TaskType[]>(tasks);
   const setSortKey = (key: string) => {
     setSortKeyRaw(key);
-    setSortOrder("asc");
   };
 
   const toggleSortOrder = () => {
@@ -61,10 +55,10 @@ export default function Home() {
 
   /* --- ① title検索 --- */
   const filteredBySearch = useMemo(() => {
-    return tasks.filter((t) =>
+    return taskList.filter((t) =>
       t.title.toLowerCase().includes(searchKeyword.toLowerCase()),
     );
-  }, [searchKeyword]);
+  }, [taskList, searchKeyword]);
 
   /* --- ② priorityフィルタ --- */
   const filteredByPriority = useMemo(() => {
@@ -79,6 +73,9 @@ export default function Home() {
     return sortOrder === "asc" ? sorted : sorted.reverse();
   }, [filteredByPriority, sortKey, sortOrder]);
 
+  const [isAdding, setIsAdding] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+
   return (
     <>
       <main>
@@ -92,17 +89,80 @@ export default function Home() {
           </SortContext.Provider>
         </SearchContext.Provider>
 
-        <section className="grid grid-cols-3 gap-4 bg-[var(--bg-surface)] px-32">
+        <section className="grid h-screen grid-cols-3 gap-4 bg-[var(--bg-surface)] px-32">
           {STATUS_LIST.map((status) => (
-            <div key={status} className="h-screen bg-[var(--bg-surface)] px-16">
+            <div key={status} className="bg-[var(--bg-surface)] px-16">
               <div className="flex">
-                <h2 className="my-2 text-2xl font-bold">{status}</h2>
-                <p className="mx-6 my-2 text-xl font-bold text-[var(--text-secondary)]">
+                <h2 className="my-2 cursor-default text-2xl font-bold">
+                  {status}
+                </h2>
+                <p className="mx-6 my-2 cursor-default content-center text-xl font-bold text-[var(--text-secondary)]">
                   {sortedTasks.filter((t) => t.status === status).length}
                 </p>
               </div>
-
               <TaskList tasks={sortedTasks} status={status} />
+
+              {status === "Todo" && !isAdding && (
+                <button
+                  onClick={() => setIsAdding(true)}
+                  className="transaction mt-3 flex w-full cursor-pointer justify-center rounded-lg border border-[var(--border-primary)] py-2 text-sm text-[var(--text-secondary)] transition hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)]"
+                >
+                  <p className="self-center">タスクを追加</p>
+                  <PlusIcon />
+                </button>
+              )}
+              {status === "Todo" && isAdding && (
+                <div className="my-6 h-25 rounded-lg border border-[var(--border-primary)] px-6 focus-within:border-[var(--color-primary)]">
+                  <input
+                    autoFocus
+                    type="text"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    placeholder="タイトルを入力"
+                    className="mt-3 mb-2 w-full rounded-md bg-[var(--bg-surface2)] p-2 text-sm text-[var(--text-primary)] outline-none hover:opacity-80"
+                  />
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        if (!newTitle.trim()) return;
+                        // ★「実際に追加する処理」★
+                        setTaskList((prev) => [
+                          ...prev,
+                          {
+                            id: prev.length + 1,
+                            title: newTitle,
+                            status: "Todo",
+                            priority: "Medium",
+                            description: "",
+                            displayOrder: prev.length + 1,
+                            startDate: new Date(),
+                            endDate: new Date(),
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                            dueDate: new Date(),
+                          },
+                        ]);
+                        setNewTitle("");
+                        setIsAdding(false);
+                      }}
+                      className="flex-1 cursor-pointer rounded-md bg-[var(--color-primary)] py-1 text-sm text-white hover:opacity-80"
+                    >
+                      追加
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setNewTitle("");
+                        setIsAdding(false);
+                      }}
+                      className="flex-1 cursor-pointer rounded-md border border-[var(--border-primary)] py-1 text-sm text-[var(--text-secondary)] hover:opacity-80"
+                    >
+                      キャンセル
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </section>
