@@ -35,12 +35,6 @@
     outline-offset: 2px;
   }
 
-  /* ボタンなどはフォーカス時でも枠線を消す */
-  button:focus {
-    /* outline: none;
-    box-shadow: none; */
-  }
-
   body {
     @apply bg-[var(--bg-base)] font-sans text-[var(--text-primary)];
   }
