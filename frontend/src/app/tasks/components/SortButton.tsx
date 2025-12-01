@@ -9,7 +9,7 @@ const SortButton = React.forwardRef<
     <button
       ref={ref}
       type="button"
-      className="hover:bg-muted mx-2 my-1 flex cursor-pointer items-center rounded-md transition-colors hover:opacity-80 focus:outline-none"
+      className="hover:bg-muted flex cursor-pointer items-center rounded-md transition-colors hover:opacity-80 focus:outline-none"
       {...props}
     >
       <SortIcon />
