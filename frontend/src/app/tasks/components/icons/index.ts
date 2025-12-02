@@ -5,3 +5,4 @@ export { default as SortIcon } from "./SortIcon";
 export { default as SortDownArrowIcon } from "./SortDownArrowIcon";
 export { default as SortUpArrowIcon } from "./SortUpArrowIcon";
 export { default as PlusIcon } from "./PlusIcon";
+export { default as TrashIcon } from "./TrashIcon";
