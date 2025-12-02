@@ -12,7 +12,7 @@ import FilterButton from "./FilterButton";
 import { useState, useContext } from "react";
 import { Priority } from "@/app/tasks/type";
 
-import { FilterContext } from "@/app/page";
+import { FilterContext } from "@/app/tasks/page";
 
 export default function FilterDropdown() {
   const [filter, setFilter] = useContext(FilterContext);

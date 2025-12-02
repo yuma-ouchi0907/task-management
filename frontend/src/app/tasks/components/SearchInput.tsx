@@ -1,4 +1,4 @@
-import { SearchContext } from "@/app/page";
+import { SearchContext } from "@/app/tasks/page";
 import { useContext } from "react";
 
 type Props = {

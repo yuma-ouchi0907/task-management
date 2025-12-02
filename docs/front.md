@@ -22,10 +22,10 @@ npx create-next-app@latest プロジェクト名
   - `types.ts`: タスク機能に関する型定義（Task 型など）
   - `_components/`: タスク画面専用の UI コンポーネント（例：TaskCard, TaskForm）
 
-- **app/@modal/tasks/[taskid]/**
+- **app/@modal/tasks/[taskId]/**
 
   - 特定のタスク詳細をモーダルで表示する並列ルート
-  - `[taskid]/page.tsx`: URL 付きモーダル（例：/tasks?modal=abc123）
+  - `[taskId]/page.tsx`: URL 付きモーダル（例：/tasks?modal=abc123）
 
 - **components/**
 

@@ -6,7 +6,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useState, useContext } from "react";
-import { SortContext } from "@/app/page";
+import { SortContext } from "@/app/tasks/page";
 import {
   SortDownArrowIcon,
   SortUpArrowIcon,
