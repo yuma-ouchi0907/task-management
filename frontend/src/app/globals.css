@@ -11,6 +11,7 @@
   --border-primary: #5d5e60;
   --text-primary: #f4f4f6;
   --text-secondary: #99999b;
+  --alert: #c9372c;
 }
 
 /* 3️⃣ shadcn/ui との整合性を保つテーマ変数マッピング */

@@ -55,7 +55,7 @@ export default function DeleteTaskModal() {
         <div className="flex gap-4">
           <button
             onClick={handleDelete}
-            className="flex-1 rounded-lg bg-red-600 py-2 text-white hover:bg-red-700"
+            className="flex-1 rounded-lg bg-[var(--alert)] py-2 text-white hover:bg-[var(--alert)]/80"
           >
             削除
           </button>
