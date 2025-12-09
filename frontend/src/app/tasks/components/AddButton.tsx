@@ -1,4 +1,4 @@
-import { PlusIcon } from "./icons";
+import { PlusIcon } from "@/app/tasks/components/icons";
 import { ButtonHTMLAttributes, ClassAttributes, JSX, useContext } from "react";
 import { AddContext } from "@/app/tasks/page";
 

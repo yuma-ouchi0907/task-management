@@ -1,5 +1,5 @@
 import React from "react";
-import FilterIcon from "@/app/tasks/components/icons/FilterIcon";
+import { FilterIcon } from "@/app/tasks/components/icons";
 
 // ref の型を明示的に <HTMLButtonElement, Props> と指定！
 const FilterButton = React.forwardRef<

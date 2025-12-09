@@ -1,5 +1,5 @@
 import React from "react";
-import SortIcon from "@/app/tasks/components/icons/SortIcon";
+import { SortIcon } from "@/app/tasks/components/icons";
 
 const SortButton = React.forwardRef<
   HTMLButtonElement,

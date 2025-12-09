@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { TaskType } from "../type";
-import CloseIcon from "./CloseIcon";
+import { CloseIcon } from "@/app/tasks/components/icons";
 
 type TaskDescriptionModalType = {
   task: TaskType;

@@ -6,3 +6,4 @@ export { default as SortDownArrowIcon } from "./SortDownArrowIcon";
 export { default as SortUpArrowIcon } from "./SortUpArrowIcon";
 export { default as PlusIcon } from "./PlusIcon";
 export { default as TrashIcon } from "./TrashIcon";
+export { default as CloseIcon } from "./CloseIcon";
