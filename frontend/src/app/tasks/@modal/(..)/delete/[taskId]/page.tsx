@@ -3,6 +3,9 @@
 import { useRouter, useParams } from "next/navigation";
 import { useTaskContext } from "@/app/tasks/context/TaskContext"; // ← 追加
 
+// リロード時や直接アクセス時のリダイレクト制御に使用
+import { redirect } from "next/navigation";
+
 export default function DeleteTaskModal() {
   const router = useRouter();
   const params = useParams();
@@ -11,7 +14,11 @@ export default function DeleteTaskModal() {
   const taskId = Number(params.taskId);
 
   const task = tasks.find((t) => t.id === taskId);
-
+  if (typeof window === "undefined") {
+    // サーバーコンポーネントでは Link の代わりに redirect を使用
+    return redirect("/tasks");
+    // または、Link コンポーネントの `replace` プロパティを使ってクライアント側で戻す
+  }
   if (!task) {
     return (
       <div className="flex h-full items-center justify-center bg-[var(--bg-surface)]">

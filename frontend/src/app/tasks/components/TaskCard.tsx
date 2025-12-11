@@ -47,9 +47,8 @@ export default function TaskCard({ task }: TaskCardProps) {
             <h3 className="group-hover:text-[var(--text-primary)]">
               {task.title}
             </h3>
-
             <Link
-              href={`/tasks/${task.id}/delete`}
+              href={`/tasks/delete/${task.id}`}
               onClick={(e) => {
                 e.stopPropagation();
               }}

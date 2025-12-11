@@ -1,3 +1,3 @@
-export default function DefaultModal() {
-  return null;
+export default function ModalDefault() {
+  return null; // モーダルがないときは何も表示しない
 }
