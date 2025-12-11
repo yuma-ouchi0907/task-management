@@ -1,20 +1,20 @@
 import { PlusIcon } from "@/app/tasks/components/icons";
-import { ButtonHTMLAttributes, ClassAttributes, JSX, useContext } from "react";
-import { AddContext } from "@/app/tasks/page";
+import { ButtonHTMLAttributes, ClassAttributes, JSX } from "react";
+import { useRouter } from "next/navigation"; // ← 追加！
 
 export default function AddButton(
   props: JSX.IntrinsicAttributes &
     ClassAttributes<HTMLButtonElement> &
     ButtonHTMLAttributes<HTMLButtonElement>,
 ) {
-  const [, setIsAdding] = useContext(AddContext);
+  const router = useRouter(); // ← 追加！
   return (
     <button
       {...props}
-      onClick={() => setIsAdding((prev) => !prev)}
-      className="transaction flex h-10 w-36 cursor-pointer items-center justify-center rounded-lg border-none bg-[var(--color-primary)] text-sm text-[var(--text-primary)] transition hover:bg-[var(--color-primary)]/80 hover:text-[var(--text-primary)]/80"
+      onClick={() => router.push("/tasks/new")}
+      className="transaction flex h-10 w-32 cursor-pointer items-center justify-center rounded-lg border-none bg-[var(--color-primary)] text-sm text-[var(--text-primary)] transition hover:bg-[var(--color-primary)]/80 hover:text-[var(--text-primary)]/80"
     >
-      <p className="self-center">タスクを追加</p>
+      <p className="self-center">タスク追加</p>
       <PlusIcon />
     </button>
   );
