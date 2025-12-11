@@ -10,6 +10,8 @@ import { DatePicker } from "../../../components/DatePicker";
 // リロード時や直接アクセス時のリダイレクト制御に使用
 import { redirect } from "next/navigation";
 
+import PrimaryButton from "@/app/tasks/components/ui/PrimaryButton";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -254,12 +256,9 @@ export default function NewTaskPage() {
 
               {/* 作成ボタン */}
               <div className="mt-8 flex justify-end">
-                <button
-                  onClick={handleSubmit}
-                  className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
-                >
-                  作成する
-                </button>
+                <PrimaryButton onClick={handleSubmit} className="h-10 w-20">
+                  <p>作成する</p>
+                </PrimaryButton>
               </div>
             </div>
           </div>
