@@ -13,7 +13,7 @@ const SearchInput = ({ placeholder = "検索" }: Props) => {
       value={searchKeyword}
       placeholder={placeholder}
       onChange={(e) => setSearchKeyword(e.target.value)}
-      className="flex-1 bg-transparent text-[var(--text-primary)] placeholder-[var(--text-secondary)] hover:opacity-80 focus:outline-none"
+      className="bg-transparent text-[var(--text-primary)] placeholder-[var(--text-secondary)] hover:opacity-80 focus:outline-none"
     />
   );
 };
