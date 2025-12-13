@@ -1,7 +1,8 @@
 import { Search } from "lucide-react";
+import { DEFAULT_ICON_PROPS } from "@/app/tasks/type";
 
 const SearchIcon: React.FC = () => {
-  return <Search className="m-2 h-5 w-5" strokeWidth={1.5} />;
+  return <Search {...DEFAULT_ICON_PROPS} className="m-2" />;
 };
 
 export default SearchIcon;

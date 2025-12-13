@@ -1,7 +1,8 @@
 import { ChevronDown } from "lucide-react";
+import { DEFAULT_ICON_PROPS } from "@/app/tasks/type";
 
-const DropdownIcon = () => {
-  return <ChevronDown className="h-5 w-5" strokeWidth={2} aria-hidden="true" />;
+const DropdownIcon: React.FC = () => {
+  return <ChevronDown {...DEFAULT_ICON_PROPS} />;
 };
 
 export default DropdownIcon;

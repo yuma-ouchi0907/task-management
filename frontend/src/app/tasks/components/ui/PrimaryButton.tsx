@@ -1,9 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
-
-type PrimaryButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  children: ReactNode;
-  className?: string;
-};
+import { PrimaryButtonProps } from "@/app/tasks/type";
 
 export default function PrimaryButton({
   children,

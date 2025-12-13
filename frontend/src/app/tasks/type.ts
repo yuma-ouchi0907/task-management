@@ -1,3 +1,6 @@
+import { ButtonHTMLAttributes, ReactNode } from "react";
+import type { LucideProps } from "lucide-react";
+
 export const STATUS_LIST = ["Todo", "Doing", "Done"] as const;
 export type Status = (typeof STATUS_LIST)[number];
 
@@ -43,4 +46,19 @@ export type TaskContextType = {
   tasks: TaskType[];
   deleteTask: (id: number) => void;
   addTask: (task: TaskType) => void; // ← 追加！！
+};
+
+export type PrimaryButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  children: ReactNode;
+  className?: string;
+};
+
+export type TriggerButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+export type TriggerButtonRef = HTMLButtonElement;
+
+export const DEFAULT_ICON_PROPS: LucideProps = {
+  className: "h-5 w-5",
+  strokeWidth: 1.5,
+  "aria-hidden": true,
 };

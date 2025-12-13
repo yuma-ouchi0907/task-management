@@ -1,7 +1,7 @@
 import { ListFilter } from "lucide-react";
-
+import { DEFAULT_ICON_PROPS } from "@/app/tasks/type";
 const FilterIcon: React.FC = () => {
-  return <ListFilter className="m-2 h-5 w-5" strokeWidth={1.5} />;
+  return <ListFilter {...DEFAULT_ICON_PROPS} className="m-2" />;
 };
 
 export default FilterIcon;
