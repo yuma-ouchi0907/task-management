@@ -1,17 +1,17 @@
 "use client";
-
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
 import { Calendar } from "@/components/ui/calendar";
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { CalendarIcon } from "./icons";
 
 type Props = {
   value: Date | undefined;
@@ -28,11 +28,11 @@ export function DatePicker({ value, onChange, placeholder }: Props) {
         <Button
           variant="outline"
           className={cn(
-            "w-full justify-start border-[var(--border-primary)] bg-[var(--bg-base)] text-left font-normal text-[var(--text-primary)]",
+            "w-full justify-start border-[var(--border-primary)] bg-[var(--bg-base)] text-left font-normal",
             !value && "text-[var(--text-secondary)]",
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4 text-[var(--text-secondary)]" />
+          <CalendarIcon />
           {value ? format(value, "PPP", { locale: ja }) : placeholder}
         </Button>
       </PopoverTrigger>
@@ -46,7 +46,6 @@ export function DatePicker({ value, onChange, placeholder }: Props) {
             setOpen(false);
           }}
           locale={ja}
-          initialFocus
         />
       </PopoverContent>
     </Popover>

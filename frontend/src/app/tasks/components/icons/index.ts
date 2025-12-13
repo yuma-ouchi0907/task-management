@@ -8,3 +8,4 @@ export { default as PlusIcon } from "./PlusIcon";
 export { default as TrashIcon } from "./TrashIcon";
 export { default as CloseIcon } from "./CloseIcon";
 export { default as DropdownIcon } from "./DropdownIcon";
+export { default as CalendarIcon } from "./CalendarIcon";
