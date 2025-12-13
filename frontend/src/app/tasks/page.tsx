@@ -42,7 +42,7 @@ export const sortStrategies: Record<
 export default function Home() {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [filter, setFilter] = useState<Priority[]>([]);
-  const { tasks, addTask } = useTaskContext(); // ← Context を使う
+  const { tasks } = useTaskContext();
   const [sortKey, setSortKeyRaw] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const setSortKey = (key: string) => {
@@ -72,7 +72,6 @@ export default function Home() {
   }, [filteredByPriority, sortKey, sortOrder]);
 
   const [isAdding, setIsAdding] = useState(false);
-  const [newTitle, setNewTitle] = useState("");
 
   return (
     <>
@@ -100,54 +99,6 @@ export default function Home() {
                 </p>
               </div>
               <TaskList tasks={sortedTasks} status={status} />
-
-              {status === "Todo" && isAdding && (
-                <div className="my-8 h-25 rounded-lg border border-[var(--border-primary)] px-6 focus-within:border-[var(--color-primary)]">
-                  <input
-                    autoFocus
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
-                    placeholder="タイトルを入力"
-                    className="my-2 w-full rounded-md bg-[var(--bg-surface2)] p-2 text-sm text-[var(--text-primary)] outline-none hover:opacity-80"
-                  />
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        if (!newTitle.trim()) return;
-
-                        addTask({
-                          id: tasks.length + 1,
-                          title: newTitle,
-                          status: "Todo",
-                          priority: "Medium",
-                          description: "",
-                          displayOrder: tasks.length + 1,
-                          startDate: new Date(),
-                          endDate: new Date(),
-                          createdAt: new Date(),
-                          updatedAt: new Date(),
-                          dueDate: new Date(),
-                        });
-
-                        setNewTitle("");
-                        setIsAdding(false);
-                      }}
-                      className="flex-1 cursor-pointer rounded-md bg-[var(--color-primary)] py-1 text-sm text-white hover:opacity-80"
-                    >
-                      追加
-                    </button>
-                    <button
-                      onClick={() => {
-                        setNewTitle("");
-                        setIsAdding(false);
-                      }}
-                      className="flex-1 cursor-pointer rounded-md border border-[var(--border-primary)] py-1 text-sm text-[var(--text-secondary)] hover:opacity-80"
-                    >
-                      キャンセル
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
           ))}
         </section>
