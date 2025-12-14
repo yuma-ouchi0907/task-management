@@ -28,17 +28,15 @@
 
 /* 4️⃣ ベーススタイル */
 @layer base {
-  /* 全要素へのoutline指定をやめて、input系だけに限定 */
   input:focus-visible,
   textarea:focus-visible,
   select:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
+    outline: none;
   }
+}
 
-  body {
-    @apply bg-[var(--bg-surface)] font-sans text-[var(--text-primary)];
-  }
+body {
+  @apply bg-[var(--bg-surface)] font-sans text-[var(--text-primary)];
 }
 
 /* 5️⃣ カスタムボタンユーティリティ */

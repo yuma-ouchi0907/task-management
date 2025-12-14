@@ -28,7 +28,7 @@ export function DatePicker({ value, onChange, placeholder }: Props) {
         <Button
           variant="outline"
           className={cn(
-            "w-full justify-start border-[var(--border-primary)] bg-[var(--bg-base)] text-left font-normal",
+            "w-full justify-start border-none bg-[var(--bg-base)] text-left font-normal",
             !value && "text-[var(--text-secondary)]",
           )}
         >
