@@ -37,8 +37,14 @@ export default function NewTaskPage() {
   const [description, setDescription] = useState("");
 
   const [startDate, setStartDate] = useState<string>(toInputDate(today));
-  const [dueDate, setDueDate] = useState<string>(toInputDate(today));
-  const [endDate, setEndDate] = useState<string>(toInputDate(today));
+  const [dueDate, setDueDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+
+  const [titleError, setTitleError] = useState("");
+  const [startDateError, setStartDateError] = useState("");
+  const [endDateError, setEndDateError] = useState("");
+  const [dueDateError, setDueDateError] = useState("");
+  const [formError, setFormError] = useState("");
 
   if (typeof window === "undefined") {
     // サーバーコンポーネントでは Link の代わりに redirect を使用
@@ -46,8 +52,41 @@ export default function NewTaskPage() {
     // または、Link コンポーネントの `replace` プロパティを使ってクライアント側で戻す
   }
   const handleSubmit = () => {
-    if (!title.trim()) return;
+    // reset
+    setTitleError("");
+    setStartDateError("");
+    setEndDateError("");
+    setDueDateError("");
+    setFormError("");
 
+    let hasError = false;
+
+    if (!title.trim()) {
+      setTitleError("タイトルを入力してください。");
+      hasError = true;
+    }
+
+    if (!startDate) {
+      setStartDateError("開始日を選択してください。");
+      hasError = true;
+    }
+
+    if (!endDate) {
+      setEndDateError("終了日を選択してください。");
+      hasError = true;
+    }
+
+    if (!dueDate) {
+      setDueDateError("締切日を選択してください。");
+      hasError = true;
+    }
+
+    if (hasError) {
+      setFormError(
+        "入力内容に不備があります。赤く表示された項目をご確認ください。",
+      );
+      return;
+    }
     addTask({
       id: tasks.length + 1,
       displayOrder: tasks.length + 1,
@@ -104,17 +143,43 @@ export default function NewTaskPage() {
 
               {/* 入力セクション */}
               <section className="mt-6 space-y-6 border-t border-[var(--border-primary)] pt-6 text-sm text-[var(--text-primary)]">
+                {formError && (
+                  <div
+                    role="alert"
+                    className="rounded-md border-none bg-[var(--alert)] px-4 py-3 text-sm text-[var(--text-primary)]"
+                  >
+                    {formError}
+                  </div>
+                )}
                 {/* タイトル */}
                 <div>
                   <label className="mb-2 block text-[var(--text-secondary)]">
-                    タイトル
+                    タイトル <span className="text-[var(--alert)]">*</span>
                   </label>
+
                   <input
                     type="text"
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="w-full rounded-md border border-[var(--border-primary)] bg-[var(--bg-base)] px-3 py-2 text-[var(--text-primary)]"
+                    onChange={(e) => {
+                      setTitle(e.target.value);
+                      if (titleError) setTitleError("");
+                    }}
+                    className={`w-full rounded-md border bg-[var(--bg-base)] px-3 py-2 text-[var(--text-primary)] transition-colors ${
+                      titleError
+                        ? "border-[var(--alert)] focus:border-[var(--color-primary)]"
+                        : "border-[var(--border-primary)] focus:border-[var(--color-primary)]"
+                    } `}
+                    aria-invalid={!!titleError}
                   />
+
+                  {titleError && (
+                    <p
+                      role="alert"
+                      className="mt-2 text-xs text-[var(--alert)]"
+                    >
+                      {titleError}
+                    </p>
+                  )}
                 </div>
 
                 {/* ------ 2カラム（日付 + 優先度） ------ */}
@@ -122,43 +187,106 @@ export default function NewTaskPage() {
                   {/* 開始日 */}
                   <div>
                     <label className="mb-1 block text-[var(--text-secondary)]">
-                      開始日
+                      開始日 <span className="text-[var(--alert)]">*</span>
                     </label>
-                    <DatePicker
-                      value={startDate ? new Date(startDate) : undefined}
-                      onChange={(d) => setStartDate(d ? d.toISOString() : "")}
-                      placeholder="開始日を選択"
-                    />
+
+                    <div
+                      className={`rounded-md border ${
+                        startDateError
+                          ? "border-[var(--alert)] focus:border-[var(--color-primary)]"
+                          : "border-[var(--border-primary)] focus:border-[var(--color-primary)]"
+                      }`}
+                    >
+                      <DatePicker
+                        value={startDate ? new Date(startDate) : undefined}
+                        onChange={(d) => {
+                          setStartDate(d ? d.toISOString() : "");
+                          if (startDateError) setStartDateError("");
+                        }}
+                        placeholder="開始日を選択"
+                      />
+                    </div>
+
+                    {startDateError && (
+                      <p
+                        role="alert"
+                        className="mt-1 text-xs text-[var(--alert)]"
+                      >
+                        {startDateError}
+                      </p>
+                    )}
                   </div>
 
                   {/* 終了日 */}
                   <div>
                     <label className="mb-1 block text-[var(--text-secondary)]">
-                      終了日
+                      終了日 <span className="text-[var(--alert)]">*</span>
                     </label>
-                    <DatePicker
-                      value={endDate ? new Date(endDate) : undefined}
-                      onChange={(d) => setEndDate(d ? d.toISOString() : "")}
-                      placeholder="終了日を選択"
-                    />
+
+                    <div
+                      className={`rounded-md border ${
+                        endDateError
+                          ? "border-[var(--alert)] focus:border-[var(--color-primary)]"
+                          : "border-[var(--border-primary)] focus:border-[var(--color-primary)]"
+                      }`}
+                    >
+                      <DatePicker
+                        value={endDate ? new Date(endDate) : undefined}
+                        onChange={(d) => {
+                          setEndDate(d ? d.toISOString() : "");
+                          if (endDateError) setEndDateError("");
+                        }}
+                        placeholder="終了日を選択"
+                      />
+                    </div>
+
+                    {endDateError && (
+                      <p
+                        role="alert"
+                        className="mt-1 text-xs text-[var(--alert)]"
+                      >
+                        {endDateError}
+                      </p>
+                    )}
                   </div>
 
                   {/* 締切日 */}
                   <div>
                     <label className="mb-1 block text-[var(--text-secondary)]">
-                      締切日
+                      締切日 <span className="text-[var(--alert)]">*</span>
                     </label>
-                    <DatePicker
-                      value={dueDate ? new Date(dueDate) : undefined}
-                      onChange={(d) => setDueDate(d ? d.toISOString() : "")}
-                      placeholder="締切日を選択"
-                    />
+
+                    <div
+                      className={`rounded-md border ${
+                        dueDateError
+                          ? "border-[var(--alert)]"
+                          : "border-[var(--border-primary)]"
+                      }`}
+                    >
+                      <DatePicker
+                        value={dueDate ? new Date(dueDate) : undefined}
+                        onChange={(d) => {
+                          setDueDate(d ? d.toISOString() : "");
+                          if (dueDateError) setDueDateError("");
+                        }}
+                        placeholder="締切日を選択"
+                      />
+                    </div>
+
+                    {dueDateError && (
+                      <p
+                        role="alert"
+                        className="mt-1 text-xs text-[var(--alert)]"
+                      >
+                        {dueDateError}
+                      </p>
+                    )}
                   </div>
 
                   {/* 優先度 */}
                   <div>
                     <label className="mb-1 block text-[var(--text-secondary)]">
-                      優先度
+                      優先度 <span className="text-[var(--alert)]">*</span>
                     </label>
 
                     <DropdownMenu>
@@ -249,7 +377,7 @@ export default function NewTaskPage() {
                     rows={4}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-full rounded-md border border-[var(--border-primary)] bg-[var(--bg-base)] px-3 py-2 text-[var(--text-primary)]"
+                    className="w-full rounded-md border border-[var(--border-primary)] bg-[var(--bg-base)] px-3 py-2 text-[var(--text-primary)] focus:border-[var(--color-primary)]"
                   />
                 </div>
               </section>
