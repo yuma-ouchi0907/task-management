@@ -45,7 +45,7 @@ export type AddContextType = [
 export type TaskContextType = {
   tasks: TaskType[];
   deleteTask: (id: number) => void;
-  addTask: (task: TaskType) => void; // ← 追加！！
+  addTask: (task: TaskType) => void;
 };
 
 export type PrimaryButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {

@@ -12,8 +12,8 @@ const SortButton = React.forwardRef<TriggerButtonRef, TriggerButtonProps>(
         className="hover:bg-muted flex cursor-pointer items-center rounded-md transition-colors hover:opacity-80 focus:outline-none"
         {...props}
       >
-        ソート
         <SortIcon />
+        ソート
       </TriggerButton>
     );
   },
