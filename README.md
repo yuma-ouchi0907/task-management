@@ -15,7 +15,7 @@
 - TailwindCSS
 
 ### バックエンド
-- FastAPI(Python)
+- FastAPI(Python)(未実装）
 
 ### コード整形/コードフォーマット
 - Prettier(保存時に自動適用されるようvscode設定済み)
