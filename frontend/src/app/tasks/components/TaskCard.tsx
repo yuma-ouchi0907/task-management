@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { useState } from "react";
 import { TaskType } from "../type";
 import TaskDescriptionModal from "./TaskDescriptionModal";
 import { TrashIcon } from "./icons";
-import Link from "next/link";
 
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";

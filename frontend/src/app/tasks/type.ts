@@ -1,5 +1,5 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
 import type { LucideProps } from "lucide-react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 
 export const STATUS_LIST = ["Todo", "Doing", "Done"] as const;
 export type Status = (typeof STATUS_LIST)[number];
@@ -46,6 +46,7 @@ export type TaskContextType = {
   tasks: TaskType[];
   deleteTask: (id: number) => void;
   addTask: (task: TaskType) => void;
+  updateTask: (id: number, payload: Partial<TaskType>) => void;
 };
 
 export type PrimaryButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {

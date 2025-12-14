@@ -7,7 +7,8 @@ import { tasks as initialTasks } from "../data/tasks";
 type TaskContextType = {
   tasks: TaskType[];
   deleteTask: (id: number) => void;
-  addTask: (task: TaskType) => void; // ← ①追加
+  addTask: (task: TaskType) => void;
+  updateTask: (id: number, payload: Partial<TaskType>) => void;
 };
 
 const TaskContext = createContext<TaskContextType | null>(null);
@@ -20,12 +21,18 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
   };
 
   const addTask = (task: TaskType) => {
-    setTasks((prev) => [...prev, task]); // ← ②追加
+    setTasks((prev) => [...prev, task]);
+  };
+
+  const updateTask = (id: number, payload: Partial<TaskType>) => {
+    setTasks((prev) =>
+      prev.map((task) => (task.id === id ? { ...task, ...payload } : task)),
+    );
   };
 
   return (
     <TaskContext.Provider
-      value={{ tasks, deleteTask, addTask }} // ← ③追加
+      value={{ tasks, deleteTask, addTask, updateTask }}
     >
       {children}
     </TaskContext.Provider>
