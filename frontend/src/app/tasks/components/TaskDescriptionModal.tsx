@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
-import { TaskType } from "../type";
+import { STATUS_LIST, TaskType } from "../type";
 import { DatePicker } from "./DatePicker";
 import PrimaryButton from "./ui/PrimaryButton";
 
@@ -47,6 +47,7 @@ export default function TaskDescriptionModal({
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(task.title);
   const [priority, setPriority] = useState<TaskType["priority"]>(task.priority);
+  const [status, setStatus] = useState<TaskType["status"]>(task.status);
   const [description, setDescription] = useState<string>(task.description);
   const [startDate, setStartDate] = useState<Date>(task.startDate);
   const [dueDate, setDueDate] = useState<Date>(task.dueDate);
@@ -89,24 +90,18 @@ export default function TaskDescriptionModal({
     const nextStartDate = startDate ?? task.startDate;
     const nextEndDate = endDate ?? task.endDate;
     const nextDueDate = dueDate ?? task.dueDate;
+    // タスク一覧更新する
     updateTask(task.id, {
       title,
       description,
       priority,
+      status,
       startDate: nextStartDate,
       endDate: nextEndDate,
       dueDate: nextDueDate,
       updatedAt: now,
     });
-    Object.assign(task, {
-      title,
-      description,
-      priority,
-      startDate: nextStartDate,
-      endDate: nextEndDate,
-      dueDate: nextDueDate,
-      updatedAt: now,
-    });
+
     setUpdatedAtDisplay(now);
     setIsEditing(false);
   };
@@ -115,6 +110,7 @@ export default function TaskDescriptionModal({
   const handleCancel = () => {
     setTitle(task.title);
     setPriority(task.priority);
+    setStatus(task.status);
     setDescription(task.description);
     setStartDate(task.startDate);
     setDueDate(task.dueDate);
@@ -304,8 +300,52 @@ export default function TaskDescriptionModal({
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
+                    <div>
+                      <label className="mb-1 block text-[var(--text-secondary)]">
+                        ステータス
+                      </label>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild disabled={!isEditing}>
+                          <div>
+                            <button
+                              className={`flex w-full items-center justify-between rounded-md border border-[var(--border-primary)] px-3 py-2 text-left ${disabledFieldClass}`}
+                            >
+                              {status}
+                              <DropdownIcon />
+                            </button>
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="start"
+                          className="border border-[var(--border-primary)] bg-[var(--bg-surface2)]"
+                        >
+                          <DropdownMenuLabel className="text-[var(--text-secondary)]">
+                            ステータスを選択
+                          </DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          {STATUS_LIST.map((s) => (
+                            <DropdownMenuItem
+                              key={s}
+                              onClick={() => setStatus(s)}
+                              className={`flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm ${
+                                s === status
+                                  ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)]"
+                                  : "text-[var(--text-secondary)] hover:opacity-80"
+                              }`}
+                            >
+                              <Check
+                                size={14}
+                                className={
+                                  s === status ? "opacity-100" : "opacity-0"
+                                }
+                              />
+                              {s}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </div>
-
                   <div className="mt-4">
                     <label className="mb-2 block text-[var(--text-secondary)]">
                       詳細
