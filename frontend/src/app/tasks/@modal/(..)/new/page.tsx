@@ -3,12 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CloseIcon, DropdownIcon } from "@/app/tasks/components/icons";
-import { TaskType } from "@/app/tasks/type";
+import { STATUS_LIST, TaskType } from "@/app/tasks/type";
 import { useTaskContext } from "@/app/tasks/context/TaskContext";
 import { format } from "date-fns";
-import { DatePicker } from "../../../components/DatePicker";
+import { DatePicker } from "@/app/tasks/components/DatePicker";
 // リロード時や直接アクセス時のリダイレクト制御に使用
 import { redirect } from "next/navigation";
+
+// formClass.ts など
+import { cn } from "@/lib/utils";
 
 import PrimaryButton from "@/app/tasks/components/ui/PrimaryButton";
 
@@ -26,6 +29,18 @@ import { Check } from "lucide-react";
 // input 用：yyyy-MM-dd
 const toInputDate = (d: Date) => format(d, "yyyy-MM-dd");
 
+export const formInputClass = (hasError: boolean, className?: string) =>
+  cn(
+    // 🔹 常に共通
+    "w-full rounded-md border bg-[var(--bg-base)] text-[var(--text-primary)] transition-colors",
+    "focus:border-[var(--color-primary)]",
+
+    // 🔹 エラー有無だけ切り替え
+    hasError ? "border-[var(--alert)]" : "border-[var(--border-primary)]",
+
+    className,
+  );
+
 export default function NewTaskPage() {
   const router = useRouter();
   const { tasks, addTask } = useTaskContext();
@@ -40,6 +55,7 @@ export default function NewTaskPage() {
   const [dueDate, setDueDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
+  const [status, setStatus] = useState<TaskType["status"]>("Todo");
   const [titleError, setTitleError] = useState("");
   const [startDateError, setStartDateError] = useState("");
   const [endDateError, setEndDateError] = useState("");
@@ -112,7 +128,7 @@ export default function NewTaskPage() {
       {/* 背景クリックで閉じる */}
       <div
         className="fixed inset-0 bg-[var(--bg-surface)]/60 transition-opacity"
-        onClick={() => router.back()}
+        aria-hidden="true"
       />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -164,11 +180,7 @@ export default function NewTaskPage() {
                       setTitle(e.target.value);
                       if (titleError) setTitleError("");
                     }}
-                    className={`w-full rounded-md border bg-[var(--bg-base)] px-3 py-2 text-[var(--text-primary)] transition-colors ${
-                      titleError
-                        ? "border-[var(--alert)] focus:border-[var(--color-primary)]"
-                        : "border-[var(--border-primary)] focus:border-[var(--color-primary)]"
-                    } `}
+                    className={formInputClass(!!titleError, "px-3 py-2")}
                     aria-invalid={!!titleError}
                   />
 
@@ -190,13 +202,7 @@ export default function NewTaskPage() {
                       開始日 <span className="text-[var(--alert)]">*</span>
                     </label>
 
-                    <div
-                      className={`rounded-md border ${
-                        startDateError
-                          ? "border-[var(--alert)] focus:border-[var(--color-primary)]"
-                          : "border-[var(--border-primary)] focus:border-[var(--color-primary)]"
-                      }`}
-                    >
+                    <div className={formInputClass(!!startDateError)}>
                       <DatePicker
                         value={startDate ? new Date(startDate) : undefined}
                         onChange={(d) => {
@@ -223,13 +229,7 @@ export default function NewTaskPage() {
                       終了日 <span className="text-[var(--alert)]">*</span>
                     </label>
 
-                    <div
-                      className={`rounded-md border ${
-                        endDateError
-                          ? "border-[var(--alert)] focus:border-[var(--color-primary)]"
-                          : "border-[var(--border-primary)] focus:border-[var(--color-primary)]"
-                      }`}
-                    >
+                    <div className={formInputClass(!!endDateError)}>
                       <DatePicker
                         value={endDate ? new Date(endDate) : undefined}
                         onChange={(d) => {
@@ -256,13 +256,7 @@ export default function NewTaskPage() {
                       締切日 <span className="text-[var(--alert)]">*</span>
                     </label>
 
-                    <div
-                      className={`rounded-md border ${
-                        dueDateError
-                          ? "border-[var(--alert)]"
-                          : "border-[var(--border-primary)]"
-                      }`}
-                    >
+                    <div className={formInputClass(!!dueDateError)}>
                       <DatePicker
                         value={dueDate ? new Date(dueDate) : undefined}
                         onChange={(d) => {
@@ -305,7 +299,7 @@ export default function NewTaskPage() {
 
                       <DropdownMenuContent
                         align="start"
-                        className="border-border w-40 border bg-[var(--bg-surface2)]"
+                        className="border-border w-40 border bg-[var(--bg-base)]"
                       >
                         <DropdownMenuLabel className="text-[var(--text-secondary)]">
                           優先度を選択
@@ -316,7 +310,7 @@ export default function NewTaskPage() {
                           onClick={() => setPriority("High")}
                           className={`flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm ${
                             priority === "High"
-                              ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)]"
+                              ? "bg-[var(--color-primary)] text-[var(--color-primary)]"
                               : "text-[var(--text-secondary)] hover:opacity-80"
                           }`}
                         >
@@ -367,6 +361,55 @@ export default function NewTaskPage() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
+
+                  <div>
+                    <div>
+                      <label className="mb-1 block text-[var(--text-secondary)]">
+                        ステータス{" "}
+                        <span className="text-[var(--alert)]">*</span>
+                      </label>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <div>
+                            <button
+                              className={`flex w-full items-center justify-between rounded-md border border-[var(--border-primary)] bg-[var(--bg-base)] px-3 py-2 text-left`}
+                            >
+                              {status}
+                              <DropdownIcon />
+                            </button>
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="start"
+                          className="border border-[var(--border-primary)] bg-[var(--bg-base)]"
+                        >
+                          <DropdownMenuLabel className="bg-[var(--bg-base)] text-[var(--text-secondary)]">
+                            ステータスを選択
+                          </DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          {STATUS_LIST.map((s) => (
+                            <DropdownMenuItem
+                              key={s}
+                              onClick={() => setStatus(s)}
+                              className={`flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm ${
+                                s === status
+                                  ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)]"
+                                  : "text-[var(--text-secondary)] hover:opacity-80"
+                              }`}
+                            >
+                              <Check
+                                size={14}
+                                className={
+                                  s === status ? "opacity-100" : "opacity-0"
+                                }
+                              />
+                              {s}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </div>
                 </div>
                 {/* 詳細 */}
                 <div className="mt-4">
@@ -385,7 +428,7 @@ export default function NewTaskPage() {
               {/* 作成ボタン */}
               <div className="mt-8 flex justify-end">
                 <PrimaryButton onClick={handleSubmit} className="h-10 w-20">
-                  <p>作成する</p>
+                  <p>作成</p>
                 </PrimaryButton>
               </div>
             </div>
