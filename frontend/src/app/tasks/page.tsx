@@ -75,7 +75,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="w-[dvh100] min-w-145 bg-[var(--bg-surface)]">
+      <main className="w-[100dvw] min-w-145 bg-[var(--bg-surface)]">
         <SearchContext.Provider value={[searchKeyword, setSearchKeyword]}>
           <SortContext.Provider
             value={{ sortKey, sortOrder, setSortKey, toggleSortOrder }}

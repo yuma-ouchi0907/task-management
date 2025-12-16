@@ -32,15 +32,6 @@ const priorityLabelMap: Record<TaskType["priority"], PriorityLabel> = {
   Low: "低",
 };
 
-const priorityOptions: {
-  value: TaskType["priority"];
-  label: PriorityLabel;
-}[] = [
-  { value: "High", label: "高" },
-  { value: "Medium", label: "中" },
-  { value: "Low", label: "低" },
-];
-
 const priorityBadgeClassName: Record<TaskType["priority"], string> = {
   High: `${PRIORITY_BADGE_BASE} bg-[var(--alert)]`,
   Medium: `${PRIORITY_BADGE_BASE} bg-yellow-600`,
@@ -89,7 +80,7 @@ export default function TaskDetailPage() {
   const [formError, setFormError] = useState("");
   // Dropdown open states
   const [priorityOpen, setPriorityOpen] = useState(false);
-  const [statusOpen, setStatusOpen] = useState(false);
+  const [, setStatusOpen] = useState(false);
   /* ---------- task 同期 ---------- */
   useEffect(() => {
     if (!tasks.length) return;
@@ -233,7 +224,7 @@ export default function TaskDetailPage() {
               {/* header */}
               <header className="space-y-3">
                 <p className="text-xs tracking-[0.2em] text-[var(--text-secondary)]">
-                  # {task.status}
+                  # {status}
                 </p>
                 <div className="flex items-start justify-between gap-4">
                   <h3 className="text-2xl font-semibold">タスク詳細</h3>
