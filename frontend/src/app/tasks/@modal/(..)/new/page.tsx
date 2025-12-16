@@ -1,103 +1,85 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { CloseIcon, DropdownIcon } from "@/app/tasks/components/icons";
-import { STATUS_LIST, TaskType } from "@/app/tasks/type";
+import { useRouter, redirect } from "next/navigation";
+import {
+  Priority,
+  PRIORITY_OPTIONS,
+  Status,
+  STATUS_OPTIONS,
+} from "@/app/tasks/type";
 import { useTaskContext } from "@/app/tasks/context/TaskContext";
 import { format } from "date-fns";
-import { DatePicker } from "@/app/tasks/components/DatePicker";
-// リロード時や直接アクセス時のリダイレクト制御に使用
-import { redirect } from "next/navigation";
-
-// formClass.ts など
-import { cn } from "@/lib/utils";
-
 import PrimaryButton from "@/app/tasks/components/ui/PrimaryButton";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-
-import { Check } from "lucide-react";
+import ModalShell from "@/app/tasks/components/ui/ModalShell";
+import FormErrorBanner from "@/app/tasks/components/form/FormErrorBanner";
+import { formInputClass } from "@/app/tasks/components/form/fromInputClass";
+import Field from "@/app/tasks/components/form/Field";
+import DateField from "@/app/tasks/components/form/DateField";
+import SelectMenu from "@/app/tasks/components/form/SelectMenu";
+import { validateTaskForm } from "@/app/tasks/components/form/ValidateTaskForm";
 
 // input 用：yyyy-MM-dd
 const toInputDate = (d: Date) => format(d, "yyyy-MM-dd");
-
-export const formInputClass = (hasError: boolean, className?: string) =>
-  cn(
-    // 🔹 常に共通
-    "w-full rounded-md border bg-[var(--bg-base)] text-[var(--text-primary)] transition-colors",
-    "focus:border-[var(--color-primary)]",
-
-    // 🔹 エラー有無だけ切り替え
-    hasError ? "border-[var(--alert)]" : "border-[var(--border-primary)]",
-
-    className,
-  );
 
 export default function NewTaskPage() {
   const router = useRouter();
   const { tasks, addTask } = useTaskContext();
   const today = new Date();
 
+  const handleClose = () => {
+    setPriorityOpen(false);
+    setStatusOpen(false);
+    router.back();
+  };
+
   // 入力値（全て文字列。表示時に Date に変換）
   const [title, setTitle] = useState("");
-  const [priority, setPriority] = useState<TaskType["priority"]>("Medium");
+  const [status, setStatus] = useState<Status>("Todo");
+  const [priority, setPriority] = useState<Priority>("Medium");
+  const [startDate, setStartDate] = useState<string>(toInputDate(today));
+  const [endDate, setEndDate] = useState<string>("");
+  const [dueDate, setDueDate] = useState<string>("");
   const [description, setDescription] = useState("");
 
-  const [startDate, setStartDate] = useState<string>(toInputDate(today));
-  const [dueDate, setDueDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
-
-  const [status, setStatus] = useState<TaskType["status"]>("Todo");
   const [titleError, setTitleError] = useState("");
   const [startDateError, setStartDateError] = useState("");
   const [endDateError, setEndDateError] = useState("");
   const [dueDateError, setDueDateError] = useState("");
   const [formError, setFormError] = useState("");
 
+  const [priorityOpen, setPriorityOpen] = useState(false);
+  const [statusOpen, setStatusOpen] = useState(false);
+
+  // 並列ルート（@modal）前提の画面のため、リロード・直アクセス時は親の /tasks に戻す
   if (typeof window === "undefined") {
-    // サーバーコンポーネントでは Link の代わりに redirect を使用
     return redirect("/tasks");
-    // または、Link コンポーネントの `replace` プロパティを使ってクライアント側で戻す
   }
-  const handleSubmit = () => {
-    // reset
+  const resetErrors = () => {
     setTitleError("");
     setStartDateError("");
     setEndDateError("");
     setDueDateError("");
     setFormError("");
+  };
 
-    let hasError = false;
+  const handleSubmit = () => {
+    setPriorityOpen(false);
+    setStatusOpen(false);
+    resetErrors();
 
-    if (!title.trim()) {
-      setTitleError("タイトルを入力してください。");
-      hasError = true;
-    }
+    const errors = validateTaskForm({
+      title,
+      startDate,
+      endDate,
+      dueDate,
+    });
 
-    if (!startDate) {
-      setStartDateError("開始日を選択してください。");
-      hasError = true;
-    }
-
-    if (!endDate) {
-      setEndDateError("終了日を選択してください。");
-      hasError = true;
-    }
-
-    if (!dueDate) {
-      setDueDateError("締切日を選択してください。");
-      hasError = true;
-    }
-
-    if (hasError) {
+    if (Object.keys(errors).length > 0) {
+      setTitleError(errors.title ?? "");
+      setStartDateError(errors.startDate ?? "");
+      setEndDateError(errors.endDate ?? "");
+      setDueDateError(errors.dueDate ?? "");
       setFormError(
         "入力内容に不備があります。赤く表示された項目をご確認ください。",
       );
@@ -109,13 +91,10 @@ export default function NewTaskPage() {
       title,
       description,
       priority,
-      status: "Todo",
-
-      // 文字列から Date に変換
+      status,
       startDate: new Date(startDate),
       dueDate: new Date(dueDate),
       endDate: new Date(endDate),
-
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -124,317 +103,109 @@ export default function NewTaskPage() {
   };
 
   return (
-    <div className="relative z-10" role="dialog" aria-modal="true">
-      {/* 背景クリックで閉じる */}
-      <div
-        className="fixed inset-0 bg-[var(--bg-surface)]/60 transition-opacity"
-        aria-hidden="true"
-      />
+    <ModalShell title="タスク追加" onClose={handleClose}>
+      <div className="cursor-default px-6 pt-8 pb-6 sm:px-10 sm:pt-12 sm:pb-10">
+        <header className="space-y-3">
+          <h3 className="text-2xl font-semibold text-[var(--text-primary)]">
+            タスク追加
+          </h3>
+        </header>
 
-      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div
-          className="flex min-h-full items-center justify-center p-4"
-          onClick={() => router.back()}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="relative transform overflow-hidden rounded-2xl bg-[var(--bg-surface2)] text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl"
-          >
-            {/* 閉じるボタン */}
-            <button
-              type="button"
-              className="absolute top-4 right-4 cursor-pointer rounded-full p-2 text-[var(--text-secondary)] transition hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)]"
-              onClick={() => router.back()}
-            >
-              <CloseIcon />
-            </button>
+        <section className="mt-6 space-y-6 border-t border-[var(--border-primary)] pt-6 text-sm text-[var(--text-primary)]">
+          {formError && <FormErrorBanner message={formError} />}
+          <Field label="タイトル" required error={titleError}>
+            <input
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                if (titleError) setTitleError("");
+              }}
+              className={formInputClass(!!titleError, "px-3 py-2")}
+            />
+          </Field>
 
-            {/* 内容 */}
-            <div className="cursor-default px-6 pt-8 pb-6 sm:px-10 sm:pt-12 sm:pb-10">
-              <header className="space-y-3">
-                <h3 className="text-2xl font-semibold text-[var(--text-primary)]">
-                  タスク追加
-                </h3>
-              </header>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <DateField
+              label="開始日"
+              required
+              value={startDate ? new Date(startDate) : undefined}
+              error={startDateError}
+              onChange={(d) => {
+                setStartDate(d ? d.toISOString() : "");
+                if (startDateError) setStartDateError("");
+              }}
+              placeholder="開始日を選択"
+            />
 
-              {/* 入力セクション */}
-              <section className="mt-6 space-y-6 border-t border-[var(--border-primary)] pt-6 text-sm text-[var(--text-primary)]">
-                {formError && (
-                  <div
-                    role="alert"
-                    className="rounded-md border-none bg-[var(--alert)] px-4 py-3 text-sm text-[var(--text-primary)]"
-                  >
-                    {formError}
-                  </div>
-                )}
-                {/* タイトル */}
-                <div>
-                  <label className="mb-2 block text-[var(--text-secondary)]">
-                    タイトル <span className="text-[var(--alert)]">*</span>
-                  </label>
+            <DateField
+              label="終了日"
+              required
+              value={endDate ? new Date(endDate) : undefined}
+              error={endDateError}
+              onChange={(d) => {
+                setEndDate(d ? d.toISOString() : "");
+                if (endDateError) setEndDateError("");
+              }}
+              placeholder="終了日を選択"
+            />
 
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => {
-                      setTitle(e.target.value);
-                      if (titleError) setTitleError("");
-                    }}
-                    className={formInputClass(!!titleError, "px-3 py-2")}
-                    aria-invalid={!!titleError}
-                  />
+            <DateField
+              label="締切日"
+              required
+              value={dueDate ? new Date(dueDate) : undefined}
+              error={dueDateError}
+              onChange={(d) => {
+                setDueDate(d ? d.toISOString() : "");
+                if (dueDateError) setDueDateError("");
+              }}
+              placeholder="締切日を選択"
+            />
 
-                  {titleError && (
-                    <p
-                      role="alert"
-                      className="mt-2 text-xs text-[var(--alert)]"
-                    >
-                      {titleError}
-                    </p>
-                  )}
-                </div>
+            <SelectMenu<Priority>
+              label="優先度"
+              required
+              value={priority}
+              options={PRIORITY_OPTIONS}
+              onChange={(v) => {
+                setPriority(v);
+                setPriorityOpen(false);
+              }}
+              open={priorityOpen}
+              onOpenChange={setPriorityOpen}
+              menuLabel="優先度を選択"
+            />
 
-                {/* ------ 2カラム（日付 + 優先度） ------ */}
-                <div className="grid gap-6 sm:grid-cols-2">
-                  {/* 開始日 */}
-                  <div>
-                    <label className="mb-1 block text-[var(--text-secondary)]">
-                      開始日 <span className="text-[var(--alert)]">*</span>
-                    </label>
-
-                    <div className={formInputClass(!!startDateError)}>
-                      <DatePicker
-                        value={startDate ? new Date(startDate) : undefined}
-                        onChange={(d) => {
-                          setStartDate(d ? d.toISOString() : "");
-                          if (startDateError) setStartDateError("");
-                        }}
-                        placeholder="開始日を選択"
-                      />
-                    </div>
-
-                    {startDateError && (
-                      <p
-                        role="alert"
-                        className="mt-1 text-xs text-[var(--alert)]"
-                      >
-                        {startDateError}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* 終了日 */}
-                  <div>
-                    <label className="mb-1 block text-[var(--text-secondary)]">
-                      終了日 <span className="text-[var(--alert)]">*</span>
-                    </label>
-
-                    <div className={formInputClass(!!endDateError)}>
-                      <DatePicker
-                        value={endDate ? new Date(endDate) : undefined}
-                        onChange={(d) => {
-                          setEndDate(d ? d.toISOString() : "");
-                          if (endDateError) setEndDateError("");
-                        }}
-                        placeholder="終了日を選択"
-                      />
-                    </div>
-
-                    {endDateError && (
-                      <p
-                        role="alert"
-                        className="mt-1 text-xs text-[var(--alert)]"
-                      >
-                        {endDateError}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* 締切日 */}
-                  <div>
-                    <label className="mb-1 block text-[var(--text-secondary)]">
-                      締切日 <span className="text-[var(--alert)]">*</span>
-                    </label>
-
-                    <div className={formInputClass(!!dueDateError)}>
-                      <DatePicker
-                        value={dueDate ? new Date(dueDate) : undefined}
-                        onChange={(d) => {
-                          setDueDate(d ? d.toISOString() : "");
-                          if (dueDateError) setDueDateError("");
-                        }}
-                        placeholder="締切日を選択"
-                      />
-                    </div>
-
-                    {dueDateError && (
-                      <p
-                        role="alert"
-                        className="mt-1 text-xs text-[var(--alert)]"
-                      >
-                        {dueDateError}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* 優先度 */}
-                  <div>
-                    <label className="mb-1 block text-[var(--text-secondary)]">
-                      優先度 <span className="text-[var(--alert)]">*</span>
-                    </label>
-
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <div>
-                          <button className="flex w-full items-center justify-between rounded-md border border-[var(--border-primary)] bg-[var(--bg-base)] px-3 py-2 text-left text-[var(--text-primary)]">
-                            {priority === "High"
-                              ? "高"
-                              : priority === "Medium"
-                                ? "中"
-                                : "低"}
-                            <DropdownIcon />
-                          </button>
-                        </div>
-                      </DropdownMenuTrigger>
-
-                      <DropdownMenuContent
-                        align="start"
-                        className="border-border w-40 border bg-[var(--bg-base)]"
-                      >
-                        <DropdownMenuLabel className="text-[var(--text-secondary)]">
-                          優先度を選択
-                        </DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-
-                        <DropdownMenuItem
-                          onClick={() => setPriority("High")}
-                          className={`flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm ${
-                            priority === "High"
-                              ? "bg-[var(--color-primary)] text-[var(--color-primary)]"
-                              : "text-[var(--text-secondary)] hover:opacity-80"
-                          }`}
-                        >
-                          <Check
-                            size={14}
-                            className={
-                              priority === "High" ? "opacity-100" : "opacity-0"
-                            }
-                          />
-                          高
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem
-                          onClick={() => setPriority("Medium")}
-                          className={`flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm ${
-                            priority === "Medium"
-                              ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)]"
-                              : "text-[var(--text-secondary)] hover:opacity-80"
-                          }`}
-                        >
-                          <Check
-                            size={14}
-                            className={
-                              priority === "Medium"
-                                ? "opacity-100"
-                                : "opacity-0"
-                            }
-                          />
-                          中
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem
-                          onClick={() => setPriority("Low")}
-                          className={`flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm ${
-                            priority === "Low"
-                              ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)]"
-                              : "text-[var(--text-secondary)] hover:opacity-80"
-                          }`}
-                        >
-                          <Check
-                            size={14}
-                            className={
-                              priority === "Low" ? "opacity-100" : "opacity-0"
-                            }
-                          />
-                          低
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-
-                  <div>
-                    <div>
-                      <label className="mb-1 block text-[var(--text-secondary)]">
-                        ステータス{" "}
-                        <span className="text-[var(--alert)]">*</span>
-                      </label>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <div>
-                            <button
-                              className={`flex w-full items-center justify-between rounded-md border border-[var(--border-primary)] bg-[var(--bg-base)] px-3 py-2 text-left`}
-                            >
-                              {status}
-                              <DropdownIcon />
-                            </button>
-                          </div>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          align="start"
-                          className="border border-[var(--border-primary)] bg-[var(--bg-base)]"
-                        >
-                          <DropdownMenuLabel className="bg-[var(--bg-base)] text-[var(--text-secondary)]">
-                            ステータスを選択
-                          </DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          {STATUS_LIST.map((s) => (
-                            <DropdownMenuItem
-                              key={s}
-                              onClick={() => setStatus(s)}
-                              className={`flex cursor-pointer items-center rounded-sm px-2 py-1 text-sm ${
-                                s === status
-                                  ? "bg-[var(--color-primary)]/15 text-[var(--color-primary)]"
-                                  : "text-[var(--text-secondary)] hover:opacity-80"
-                              }`}
-                            >
-                              <Check
-                                size={14}
-                                className={
-                                  s === status ? "opacity-100" : "opacity-0"
-                                }
-                              />
-                              {s}
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
-                </div>
-                {/* 詳細 */}
-                <div className="mt-4">
-                  <label className="mb-2 block text-[var(--text-secondary)]">
-                    詳細
-                  </label>
-                  <textarea
-                    rows={4}
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="w-full rounded-md border border-[var(--border-primary)] bg-[var(--bg-base)] px-3 py-2 text-[var(--text-primary)] focus:border-[var(--color-primary)]"
-                  />
-                </div>
-              </section>
-
-              {/* 作成ボタン */}
-              <div className="mt-8 flex justify-end">
-                <PrimaryButton onClick={handleSubmit} className="h-10 w-20">
-                  <p>作成</p>
-                </PrimaryButton>
-              </div>
-            </div>
+            <SelectMenu<Status>
+              label="ステータス"
+              required
+              value={status}
+              options={STATUS_OPTIONS}
+              onChange={(v) => {
+                setStatus(v);
+                setStatusOpen(false); // ← 重要
+              }}
+              open={statusOpen}
+              onOpenChange={setStatusOpen}
+              menuLabel="ステータスを選択"
+            />
           </div>
+
+          <Field label="詳細">
+            <textarea
+              rows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className={formInputClass(false, "px-3 py-2")}
+            />
+          </Field>
+        </section>
+
+        <div className="mt-8 flex justify-end">
+          <PrimaryButton onClick={handleSubmit} className="h-10 w-20">
+            <p>作成</p>
+          </PrimaryButton>
         </div>
       </div>
-    </div>
+    </ModalShell>
   );
 }

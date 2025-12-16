@@ -63,3 +63,26 @@ export const DEFAULT_ICON_PROPS: LucideProps = {
   strokeWidth: 1.5,
   "aria-hidden": true,
 };
+
+export const PRIORITY_OPTIONS = [
+  { value: "High", label: "高" },
+  { value: "Medium", label: "中" },
+  { value: "Low", label: "低" },
+] as const satisfies ReadonlyArray<{
+  value: Priority;
+  label: string;
+}>;
+
+export const PRIORITY_LABEL_MAP: Record<Priority, string> = {
+  High: "高",
+  Medium: "中",
+  Low: "低",
+};
+
+export const STATUS_OPTIONS = STATUS_LIST.map((s) => ({
+  value: s,
+  label: s,
+})) satisfies ReadonlyArray<{
+  value: Status;
+  label: string;
+}>;
