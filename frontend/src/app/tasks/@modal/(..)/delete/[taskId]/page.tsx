@@ -40,7 +40,7 @@ export default function DeleteTaskModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg-surface)]/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg-surface)]/60"
       onClick={closeModal} // ← 背景クリックで閉じる
     >
       <div
@@ -48,7 +48,7 @@ export default function DeleteTaskModal() {
         onClick={(e) => e.stopPropagation()} // ← 内側クリックは閉じない
       >
         <h2 className="mb-4 text-xl font-bold text-[var(--text-primary)]">
-          タスクを削除
+          タスク削除
         </h2>
 
         <p className="mb-6 text-lg font-semibold text-[var(--text-primary)]">
@@ -71,7 +71,7 @@ export default function DeleteTaskModal() {
             onClick={closeModal}
             className="flex-1 rounded-lg border border-[var(--border-primary)] py-2 text-[var(--text-secondary)] hover:bg-[var(--bg-base)]"
           >
-            取消
+            キャンセル
           </button>
         </div>
       </div>

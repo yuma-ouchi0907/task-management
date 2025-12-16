@@ -51,7 +51,7 @@ export default function FilterDropdown() {
 
       <DropdownMenuContent
         align="start"
-        className="border-border w-40 cursor-default border-b"
+        className="border-border w-40 cursor-default border-b bg-[var(--bg-base)]"
         onClick={handleTriggerClick}
       >
         <DropdownMenuLabel className="text-[var(--text-secondary)]">

@@ -56,7 +56,7 @@ export default function SortDropdown() {
 
       <DropdownMenuContent
         align="start"
-        className="border-border w-36 border-b"
+        className="border-border w-36 border-b bg-[var(--bg-base)]"
         forceMount
         onClick={handleTriggerClick}
       >

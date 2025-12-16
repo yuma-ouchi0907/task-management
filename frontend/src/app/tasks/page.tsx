@@ -75,7 +75,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="w-[dvh100] bg-[var(--bg-surface)]">
+      <main className="w-[dvh100] min-w-145 bg-[var(--bg-surface)]">
         <SearchContext.Provider value={[searchKeyword, setSearchKeyword]}>
           <SortContext.Provider
             value={{ sortKey, sortOrder, setSortKey, toggleSortOrder }}
@@ -87,7 +87,7 @@ export default function Home() {
             </FilterContext.Provider>
           </SortContext.Provider>
         </SearchContext.Provider>
-        <section className="grid h-[calc(100dvh-130px)] grid-cols-3 gap-4 bg-[var(--bg-surface)] px-4 2xl:px-32">
+        <section className="grid h-[calc(100dvh-130px)] justify-center gap-4 bg-[var(--bg-surface)] lg:grid-cols-3 lg:px-4 2xl:px-32">
           {STATUS_LIST.map((status) => (
             <div key={status} className="bg-[var(--bg-surface)] 2xl:px-16">
               <div className="flex">

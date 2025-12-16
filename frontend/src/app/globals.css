@@ -28,10 +28,13 @@
 
 /* 4️⃣ ベーススタイル */
 @layer base {
-  input:focus-visible,
-  textarea:focus-visible,
-  select:focus-visible {
+  *:focus-visible {
     outline: none;
+  }
+
+  button:focus-visible,
+  a:focus-visible {
+    @apply border border-[var(--color-primary)];
   }
 }
 
