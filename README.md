@@ -29,6 +29,8 @@
     - 需要が高い
     - Reactはコンポーネント指向で再利用性が高い
 - TailwindCSS:"^4"
+- shadcn/ui
+- lucide-react: "^0.552.0"
 
 ### バックエンド
 - FastAPI(Python)(未実装）
